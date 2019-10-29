@@ -4,7 +4,8 @@ from django.db import models
 class Proyecto(models.Model):
     id_proyecto = models.CharField(max_length=10)
     nombre = models.CharField(max_length=60)
-    fase = models.CharField(max_length=10)
+    fases = (('A', 'Analisis'), ('D', 'Diseño'), ('C', 'Codificación'), ('P', 'Prueba'), ('M', 'Mantenimiento'))
+    fase = models.CharField(max_length=13, choices=fases)
     fecha_inicio = models.DateField()
     fecha_fin = models.DateField(null=True)
 
@@ -30,9 +31,11 @@ class Usuario(models.Model):
     correo = models.CharField(max_length=50)
     contrasenha = models.CharField(max_length=20)
     id_proyecto = models.ForeignKey(Proyecto, null=False, blank=False, on_delete=models.CASCADE)
-    estado = models.CharField(max_length=8)
+    estados = (('A', 'Activo'), ('I', 'Inacivo'))
+    estado = models.CharField(max_length=8, choices=estados)
     permiso = models.CharField(max_length=15)
-    rol = models.CharField(max_length=15)
+    roles = (("A", "Administrador"), ("L", "Lider de Proyecto"), ("D", "Desarrollador"))
+    rol = models.CharField(max_length=15, choices=roles)
 
     def __str__(self):
         return self.nombre +" "+ self.apellido
