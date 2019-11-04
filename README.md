@@ -1,3 +1,3 @@
 # Sistema-de-gestion-de-items-de-configuracion
 Proyecto de la materia ingenieria de software Ii
-PRUEBA final por favor DIOSITO
+PRUEBA final por favor DIOSITO D:
