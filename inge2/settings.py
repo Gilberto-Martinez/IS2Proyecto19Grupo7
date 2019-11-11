@@ -77,8 +77,8 @@ WSGI_APPLICATION = 'inge2.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'inge2_db',
-		'USER': 'adrian',
+        'NAME': 'inge2db',
+		'USER': 'postgres',
 		'PASSWORD': 'gamc',
 		'HOST': 'localhost',
 		'PORT': ''
@@ -123,3 +123,5 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+
+AUTH_USER_MODEL = 'gestionItem.Usuario'

@@ -1,4 +1,8 @@
 from django.db import models
+from django.contrib.auth.models import (
+    AbstractBaseUser, 
+    BaseUserManager, 
+    PermissionsMixin)
 
 # Create your models here.
 class Proyecto(models.Model):
@@ -12,6 +16,7 @@ class Proyecto(models.Model):
     def __str__(self):
         return self.nombre
 
+
 class LineaBase(models.Model):
     id_linea_base = models.CharField(max_length=10)
     estado = models.CharField(max_length=10)
@@ -24,21 +29,51 @@ class LineaBase(models.Model):
     def __str__(self):
         return self.id_linea_base
 
-class Usuario(models.Model):
+
+class PersonalizadoBaseUserManager(BaseUserManager):
+    def create_user(self, usuario, password):
+        user = self.model(usuario = usuario)
+        user.set_password(password)
+        user.save(using=self._db)
+        return user
+
+    def create_superuser(self, usuario, password):
+        user = self.create_user(usuario, password)
+        user.is_staff = True
+        user.is_superuser = True
+        user.save(using=self._db)
+        return user
+
+
+class Usuario(AbstractBaseUser, PermissionsMixin):
     cedula_identidad = models.CharField(max_length=10)
+    usuario = models.CharField(max_length=40, unique=True, default=' ') 
     nombre = models.CharField(max_length=40)
     apellido = models.CharField(max_length=40)
     correo = models.CharField(max_length=50)
     contrasenha = models.CharField(max_length=20)
-    id_proyecto = models.ForeignKey(Proyecto, null=False, blank=False, on_delete=models.CASCADE)
+    id_proyecto = models.ForeignKey(Proyecto, null=True, blank=False, on_delete=models.CASCADE)
     estados = (('A', 'Activo'), ('I', 'Inacivo'))
     estado = models.CharField(max_length=8, choices=estados)
     permiso = models.CharField(max_length=15)
     roles = (("A", "Administrador"), ("L", "Lider de Proyecto"), ("D", "Desarrollador"))
     rol = models.CharField(max_length=15, choices=roles)
 
+    is_active = models.BooleanField(default=True)
+    is_staff = models.BooleanField(default=False)
+
+    USERNAME_FIELD = "usuario"
+    objects = PersonalizadoBaseUserManager()
+
+    def get_full_name(self):
+        return self.usuario
+
+    def get_short_name(self):
+        return self.usuario
+
     def __str__(self):
-        return self.nombre +" "+ self.apellido
+        return self.usuario
+
 
 class Item(models.Model):
     id_item = models.CharField(max_length=10)
