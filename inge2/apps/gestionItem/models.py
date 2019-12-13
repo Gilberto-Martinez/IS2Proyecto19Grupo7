@@ -2,7 +2,8 @@ from django.db import models
 from django.contrib.auth.models import (
     AbstractBaseUser, 
     BaseUserManager, 
-    PermissionsMixin)
+    PermissionsMixin,
+    Group)
 
 # Create your models here.
 class Proyecto(models.Model):
@@ -26,6 +27,10 @@ class LineaBase(models.Model):
     horas_estimadas = models.PositiveSmallIntegerField()
     id_proyecto = models.ForeignKey(Proyecto, null=False, blank=False, on_delete=models.CASCADE)
 
+    class Meta:
+            ordering = ['id']
+            verbose_name_plural = 'Lineas Bases'
+
     def __str__(self):
         return self.id_linea_base
 
@@ -44,7 +49,6 @@ class PersonalizadoBaseUserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
-
 class Usuario(AbstractBaseUser, PermissionsMixin):
     usuario = models.CharField(max_length=40, unique=True, default='invitado')
     cedula_identidad = models.CharField(max_length=10) 
@@ -55,7 +59,7 @@ class Usuario(AbstractBaseUser, PermissionsMixin):
     estados = (('A', 'Activo'), ('I', 'Inacivo'))
     estado = models.CharField(max_length=8, choices=estados)
     permiso = models.CharField(max_length=15)
-    roles = (("A", "Administrador"), ("L", "Lider de Proyecto"), ("D", "Desarrollador"))
+    roles = (("A", "Administrador"), ("D", "Desarrollador"), ("P", "Product Owner"), ("S", "Scrum Master"))
     rol = models.CharField(max_length=15, choices=roles)
 
     is_active = models.BooleanField(default=True)

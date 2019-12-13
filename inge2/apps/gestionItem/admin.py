@@ -20,21 +20,36 @@ class AdminProyecto(admin.ModelAdmin):
     search_fields = ["nombre"]
 
 class PersonalizadoUserAdmin(UserAdmin):
-	fieldsets = ()
-	add_fields = ((None, {
+    fieldsets = (
+        (None, {'fields': ('usuario', 'password')}),
+        (('Informacion Personal'), {'fields': ('nombre', 'apellido', 'correo', 'cedula_identidad', 'id_proyecto', 'estado', 'permiso','rol')}),
+        (('Permisos'), {
+            'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions'),
+        }),
+        (('Datos importantes'), {'fields': ('last_login',)}),
+    )
+    add_fieldsets = (
+        (None, {
+            'classes': ('wide',),
+            'fields': ('usuario', 'password1', 'password2'),
+        }),
+    )
+    add_fields = ((None, {
 		'classes': ('wide',),
 		'fields': ('usuario', 'password1', 'password2')
 		}))
-	list_display = ["usuario", "nombre", "apellido", "estado", "rol"]
-	list_filter = ["usuario"]
-	search_fields = ["usuario"]
-	ordering = ["usuario"]
+    list_display = ["usuario", "nombre", "apellido", "estado", "rol"]
+    list_filter = ["usuario"]
+    search_fields = ["usuario"]
+    ordering = ["usuario"]
+
 
 class AdminItem(admin.ModelAdmin):
     list_display = ["id_item", "descripcion", "estado", "id_linea_base", "id_usuario_creador",]
     list_filter = ["id_item"]
     list_editable = ["descripcion", "estado", "id_linea_base", "id_usuario_creador",]
     search_fields = ["id_item"]
+
 
 admin.site.register(Proyecto, AdminProyecto)
 admin.site.register(LineaBase, AdminLineaBase)
