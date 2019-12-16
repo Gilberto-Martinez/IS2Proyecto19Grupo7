@@ -6,10 +6,10 @@ from django.contrib.auth.admin import UserAdmin
 # Register your models here.
 
 class AdminLineaBase(admin.ModelAdmin):
-    list_display = ["id_linea_base", "enunciado", "tarea", "duenho_voluntario", "estado",
+    list_display = ["id_linea_base", "enunciado", "tarea", "responsable", "estado",
 					"horas_estimadas", "id_proyecto"]
     list_filter = ["id_linea_base"]
-    list_editable = ["enunciado", "tarea", "duenho_voluntario", "estado",
+    list_editable = ["enunciado", "tarea", "responsable", "estado",
 					"horas_estimadas", "id_proyecto"]
     search_fields = ["id_linea_base"]
 
